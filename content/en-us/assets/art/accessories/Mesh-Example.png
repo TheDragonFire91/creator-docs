@@ -1,3 +1,29 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f972eeec49251724a427a3796e4583ec6fa136badab2c7f68e701209b6f325e9
-size 195695
+-- This script will apply a dragon T-shirt to a character
+
+-- Define the Asset ID of the uploaded dragon T-shirt
+local dragonTShirtID = 1234567890 -- Replace with your T-shirt's actual Asset ID
+
+-- Function to apply T-shirt to a player
+local function applyDragonTShirt(player)
+    -- Ensure the player has a character
+    if player and player.Character then
+        -- Remove any existing T-shirts
+        for _, item in pairs(player.Character:GetChildren()) do
+            if item:IsA("ShirtGraphic") then
+                item:Destroy()
+            end
+        end
+
+        -- Create a new T-shirt
+        local dragonTShirt = Instance.new("ShirtGraphic")
+        dragonTShirt.Graphic = "rbxassetid://" .. dragonTShirtID
+        dragonTShirt.Parent = player.Character
+    end
+end
+
+-- Apply the T-shirt when a player joins
+game.Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function()
+        applyDragonTShirt(player)
+    end)
+end)
